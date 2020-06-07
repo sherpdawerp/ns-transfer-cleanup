@@ -43,4 +43,4 @@ Card gifted to SherpDaWerp for 0.01, from imperial_regiment_i
 If you see this message, then, as it says, the named puppet has gifted a copy of the transfer card back to the named main nation!
 
 **Note:**
-Currently, if a puppet has more than one copy, only one gets gifted. The next thing I'll work on is making sure all copies of the transfer card get gifted back to the main nation.
+Currently, if a puppet has more than one copy, only one gets gifted. The next thing I'll work on is making sure all copies of the transfer card get gifted back to the main nation, but in the meantime, running the script again will make sure that any puppet with two copies gets covered, and again for third copies, and so on.
