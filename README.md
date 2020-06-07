@@ -21,6 +21,8 @@ To use the script, enter all of your puppet names and passwords in the array for
 If you enter someone else's nation name as main_name, they will recieve all the cards, so make sure it's correct!
 
 Once that's done, run the code! It has to make two API calls per nation (and wait a little bit in between each call), so it might take a while. 
+### Disclaimer:
+This script *requires* you to input the passwords for your nations. That's how the NS API can verify that it's really you who wants to gift the cards. The code is all open-source; I cannot see or access any data you input in any way shape or form. Your passwords are only stored locally on your computer when you edit them into the file, and only get transmitted to the NS API - nowhere else.
 ### Common Outputs:
 ```
 imperial_regiment_i does not have the transfer card
