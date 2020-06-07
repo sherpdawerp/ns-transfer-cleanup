@@ -16,7 +16,7 @@ main_name = "main nation name"
 transfer_card = ["transfer card id", "transfer card season"]
 # # Bits that you need to change # #
 ```
-To use the script, enter all of your puppet names and passwords in the array format provided, enter the name of your main nation (the nation that the cards will be gifted to) and the details of the transfer card (card ID and season).
+To use the script, enter all of your puppet names and passwords in the array format provided (*including all the quotes*), enter the name of your main nation (the nation that the cards will be gifted to) and the details of the transfer card (card ID and season).
 
 If you enter someone else's nation name as main_name, they will recieve all the cards, so make sure it's correct!
 
