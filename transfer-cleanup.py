@@ -36,9 +36,16 @@ for puppet in puppets:
         time.sleep(delay / 1000)
 
     prep_giftcard = requests.get(url, headers=headers)
-    headers = {"User-Agent": agent,
+    
+    try:
+       headers = {"User-Agent": agent,
                "X-Password": puppet[1],
                "X-Pin": prep_giftcard.headers["X-pin"]}
+    except KeyError as err:
+        if debug:
+            print(prep_giftcard.headers)
+            print(err)
+            input()
 
     try:
         resp_data = xmltodict.parse(prep_giftcard.content, "utf-8")
@@ -46,6 +53,7 @@ for puppet in puppets:
         if debug:
             print(prep_giftcard.content)
             print(err)
+            input()
         print(pup_name+" suffered an error preparing the gift. Check the spelling of the nation name and password!")
         continue
 
@@ -61,6 +69,7 @@ for puppet in puppets:
             if debug:
                 print(resp_data)
                 print(err)
+                input()
         continue
 
     url = "https://www.nationstates.net/cgi-bin/api.cgi?" \
@@ -82,6 +91,7 @@ for puppet in puppets:
         if debug:
             print(giftcard.content)
             print(err)
+            input()
         print(pup_name + " suffered an error making the gift. Check the spelling of the nation name and password!")
         continue
 
@@ -93,6 +103,7 @@ for puppet in puppets:
         if debug:
             print(resp_data)
             print(err)
+            input()
         print(pup_name + " encountered an error in gifting")
         continue
 
