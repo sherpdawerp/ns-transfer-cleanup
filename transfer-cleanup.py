@@ -1,110 +1,62 @@
-import requests
-import xmltodict
-import time
-import xml
+from nspywrapper import nsRequests, FailedRequest
+from .transfer_cleanup_vars import *
 
-# # Bits that you need to change # #
-puppets = [
-    ["nation name", "nation password"],
-    ["nation name", "nation password"],
-    ["nation name", "nation password"]
-]
-main_name = "main nation name"
-transfer_card = ["transfer card id", "transfer card season"]
-# # Bits that you need to change # #
+main_name = main_name.replace(" ", "_").lower()
+puppets = {new_key.replace(" ", "_").lower(): puppets[new_key] for new_key in puppets.keys()}
 
-debug = False
-agent = main_name + " , using SherpDaWerp's transfer cleanup tool."
-main_name = main_name.replace(" ", "_")
-last_request_time = int(round(time.time() * 1000)) - 1000
 
-for puppet in puppets:
-    pup_name = puppet[0].replace(" ", "_")
-    headers = {"User-Agent": agent,
-               "X-Password": puppet[1],
-               "X-Pin": ""}
+agent = main_name + " , using SherpDaWerp's transfer cleanup tool"
+nsapi = nsRequests(agent)
 
-    url = "https://www.nationstates.net/cgi-bin/api.cgi?" \
-          "nation="+pup_name+"&c=giftcard&cardid="+transfer_card[0]+"&season="+transfer_card[1]+"&" \
-          "to="+main_name+"&mode=prepare"
+request = nsapi.world(shards=["card", "owners"], parameters={"cardid": transfer_card[0], "season": transfer_card[1]})
+owners = request[1]["CARD"]["OWNERS"]
+owners_list = [owner["OWNER"] for owner in owners]
 
-    current_time = int(round(time.time() * 1000))
-    delay = 600 - (current_time - last_request_time)
-    if delay <= 0:
-        pass
-    else:
-        time.sleep(delay / 1000)
+gift_queue = [owner for owner in owners_list if owner in puppets.keys()]
 
-    prep_giftcard = requests.get(url, headers=headers)
-    
-    try:
-       headers = {"User-Agent": agent,
-               "X-Password": puppet[1],
-               "X-Pin": prep_giftcard.headers["X-pin"]}
-    except KeyError as err:
-        if debug:
-            print(prep_giftcard.headers)
-            print(err)
-            input()
+for pup_name in gift_queue:
+    params = {"cardid": transfer_card[0], "season": transfer_card[1], "to": main_name, "mode": "prepare"}
 
     try:
-        resp_data = xmltodict.parse(prep_giftcard.content, "utf-8")
-    except xml.parsers.expat.ExpatError as err:
-        if debug:
-            print(prep_giftcard.content)
-            print(err)
-            input()
-        print(pup_name+" suffered an error preparing the gift. Check the spelling of the nation name and password!")
+        prepare = nsapi.command(nation=pup_name, command="giftcard", parameters=params, auth=(puppets[pup_name], "", ""))
+    except FailedRequest as err:
+        print("An error was encountered preparing a gift from "+pup_name)
         continue
 
-    last_request_time = int(round(time.time() * 1000))
+    try:
+        x_autologin = prepare[0]["X-autologin"]
+        x_pin = prepare[0]["X-pin"]
+    except KeyError:
+        x_autologin = ""
+        x_pin = ""
 
     try:
-        token = resp_data["NATION"]["SUCCESS"]
-    except KeyError as err:
-        message = resp_data["NATION"]["ERROR"]
-        if message == "You don't have this card to gift.":
-            print(pup_name + " does not have the transfer card")
-        else:
-            if debug:
-                print(resp_data)
-                print(err)
-                input()
+        token = prepare[1]["NATION"]["SUCCESS"]
+    except KeyError:
+        try:
+            message = prepare[1]["NATION"]["ERROR"]
+        except KeyError:
+            message = prepare[1]
+
+        print(message + " (" + pup_name + ")")
         continue
 
-    url = "https://www.nationstates.net/cgi-bin/api.cgi?" \
-          "nation="+pup_name+"&c=giftcard&cardid="+transfer_card[0]+"&season="+transfer_card[1]+"&" \
-          "to="+main_name+"&mode=execute&token="+token
-
-    current_time = int(round(time.time() * 1000))
-    delay = 600 - (current_time - last_request_time)
-    if delay <= 0:
-        pass
-    else:
-        time.sleep(delay / 1000)
-
-    giftcard = requests.get(url, headers=headers)
+    params = {"cardid": transfer_card[0], "season": transfer_card[1], "to": main_name, "mode": "execute", "token": token}
 
     try:
-        resp_data = xmltodict.parse(giftcard.content, "utf-8")
-    except xml.parsers.expat.ExpatError as err:
-        if debug:
-            print(giftcard.content)
-            print(err)
-            input()
-        print(pup_name + " suffered an error making the gift. Check the spelling of the nation name and password!")
+        execute = nsapi.command(nation=pup_name, command="giftcard", parameters=params, auth=(puppets[pup_name], x_autologin, x_pin))
+    except FailedRequest as err:
+        print("An error was encountered making a gift from "+pup_name)
         continue
-
-    last_request_time = int(round(time.time() * 1000))
 
     try:
-        message = resp_data["NATION"]["SUCCESS"]
-    except KeyError as err:
-        if debug:
-            print(resp_data)
-            print(err)
-            input()
-        print(pup_name + " encountered an error in gifting")
-        continue
+        message = prepare[1]["NATION"]["SUCCESS"]
+    except KeyError:
+        try:
+            message = prepare[1]["NATION"]["ERROR"]
+        except KeyError:
+            message = prepare[1]
 
-    print(message + ", from " + pup_name)
+    print(message + " (" + pup_name + ")")
+
+print("\nCompleted!")
