@@ -13,7 +13,7 @@ If you enter someone else's nation name as main_name, they will recieve all the 
 
 Once that's done, run the code! It has to make two API calls per gift (and wait a little bit in between each call), so it might take a little while. 
 ### Disclaimer:
-This script *requires* you to input the passwords for your nations. That's how the NS API can verify that it's really you who wants to gift the cards. The code is all open-source; I cannot see or access any data you input in any way shape or form. Your passwords are only stored locally on your computer when you edit them into the file, and only get transmitted to the NS API - nowhere else.
+This script *requires* you to input the passwords for your nations. That's how the NS API can verify that it's really you who wants to gift the cards. All the required code is open-source. (both ns-transfer-cleanup and nspy_wrapper) I cannot see or access any data you input in any way shape or form. Your passwords are only stored locally on your computer when you edit them into the file, and only get transmitted to the NS API - nowhere else.
 
 ### License:
 ns-transfer-cleanup is provided under the Apache License 2.0.
