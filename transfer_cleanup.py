@@ -15,19 +15,30 @@
 """
 
 from nspywrapper import *
-from .transfer_cleanup_vars import *
+
+# # # # # BITS TO BE EDITED BELOW HERE # # # # #
+
+puppets = {
+  "puppet_name_1": "password",
+  "puppet_name_2": "password",
+  "puppet_name_3": "password"
+}
+
+main_name = "main_nation_name"
+
+transfer_card = ["transfer_card_id", "transfer_card_season"]
+
+# # # # # BITS TO BE EDITED ABOVE HERE # # # # #
 
 main_name = main_name.replace(" ", "_").lower()
-puppets = {new_key.replace(" ", "_").lower(): puppets[new_key] for new_key in puppets.keys()}
-
-
 agent = main_name + " , using SherpDaWerp's transfer cleanup tool"
-nsapi = nsRequests(agent)
 
+nsapi = nsRequests(agent)
 request = nsapi.world(shards=["card", "owners"], parameters={"cardid": transfer_card[0], "season": transfer_card[1]})
 owners = request.data["CARD"]["OWNERS"]
 owners_list = [owner["OWNER"] for owner in owners]
 
+puppets = {new_key.replace(" ", "_").lower(): puppets[new_key] for new_key in puppets.keys()}
 gift_queue = [owner for owner in owners_list if owner in puppets.keys()]
 
 for pup_name in gift_queue:
