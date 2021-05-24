@@ -20,7 +20,7 @@ from nspywrapper import *
 
 main_name = "main_nation_name"
 
-transfer_card = [
+transfer_cards = [
         ["transfer_card1_id", "transfer_card1_season"],
         # ["transfer_card2_id", "transfer_card2_season"],
         # etc.
