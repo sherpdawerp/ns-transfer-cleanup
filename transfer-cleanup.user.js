@@ -3,10 +3,15 @@
 // @author          SherpDaWerp
 // @description     ns-transfer-cleanup reloaded
 // @version         1
+// @downloadURL     https://github.com/sherpdawerp/ns-transfer-cleanup/raw/master/transfer-cleanup.user.js
 // @match           https://www.nationstates.net/*
 // @grant           console.log
 // @run-at          document-end
 // ==/UserScript==
+
+/**
+ * Licensed under the Apache License 2.0. The full text of the license is viewable on the script's about page, or in the LICENSE file of the repository.
+ */
 
 const transferCleanupCSS = `.transfer-cleanup-content{margin: 1%}.transfer-cleanup-control-label{font-weight: 700; display: inline-block; width: auto; margin-bottom: 5px;}.transfer-cleanup-checkbox-label{display: inline-block; width: auto; margin-bottom: 5px;}.transfer-cleanup-help-block{width: auto; display: block; margin-top: 5px; margin-bottom: 10px;}.transfer-cleanup-form-group{width: auto;}.transfer-cleanup-form-control{display: block; padding: 6px 12px; line-height: 1.2; border-radius: 5px; box-shadow: inset 0 1px 1px rgba(0,0,0,.075); margin-bottom: 30px;}input.transfer-cleanup-form-control{width: 90%}textarea.transfer-cleanup-form-control{height: auto; width: 90%;}.transfer-cleanup-file{padding: 10px;}.transfer-cleanup-checkbox{margin-bottom: 10px;}.transfer-cleanup-button{font-size: 14px; margin-top: 10px;}pre{margin: 2px; padding: 10px; background-color: #C3C3C3; width: 90%;}#transfer-cleanup-run-output{font-family: monospace;}#transfer-cleanup-start-info{margin-left: 10px; color: red;}input:invalid{border: solid red 3px;}`;
 
