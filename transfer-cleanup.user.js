@@ -2,8 +2,8 @@
 // @name            transfer-cleanup
 // @author          SherpDaWerp
 // @description     ns-transfer-cleanup reloaded
-// @version         1
 // @downloadURL     https://github.com/sherpdawerp/ns-transfer-cleanup/raw/master/transfer-cleanup.user.js
+// @version         1
 // @match           https://www.nationstates.net/*
 // @grant           console.log
 // @run-at          document-end
@@ -112,6 +112,7 @@ async function waitUntilUnpaused() {
 
 function logMessageToRunPage(message) {
     document.getElementById("transfer-cleanup-run-output").value = document.getElementById("transfer-cleanup-run-output").value + message;
+  	document.getElementById("transfer-cleanup-run-output").scrollTop = document.getElementById("transfer-cleanup-run-output").scrollHeight;
 }
 
 async function transferCleanupCardOwnersRequest(cardInfo, useragent) {
@@ -121,11 +122,12 @@ async function transferCleanupCardOwnersRequest(cardInfo, useragent) {
             "User-Agent": "Transfer-Cleanup userscript/tool, developed by SherpDaWerp, in use by "+useragent,
         }
     });
-    console.log(await response.text());
 
     if (response.status != 200) {
         logMessageToRunPage("Error: Requesting owners of "+cardInfo[0]+":"+cardInfo[1]+" failed.\n");
         logMessageToRunPage("       Terminating program...\n");
+      
+      	console.log(await response.text());
         return [];
     } else {
         let parser = new DOMParser(),
@@ -145,16 +147,26 @@ async function transferCleanupCardOwnersRequest(cardInfo, useragent) {
 }
 
 async function transferCleanupDoGiftCard(cardInfo, credentials, toNation, lastCredentials, useragent) {
-    let newLastCredentials = {nation: "", pin: ""},
+    let newLastCredentials = {nation: "", pin: "", autologin: "", password: ""},
         reqHeaders = {},
         parser = new DOMParser(),
         giftToken = "";
+  	
+  	if (credentials[0] === document.getElementById("loggedin").getAttribute("data-nname")) {
+      	logMessageToRunPage("Warning: Gifting from the currently logged-in nation is unsupported.\n");
+      	return newLastCredentials;
+    } else if (credentials[0] === toNation) {
+      	logMessageToRunPage("Info: Skipping circular gift from "+credentials[0]+" to "+toNation+".\n");
+      	return newLastCredentials;
+    }
 
     // set pin if available
     if (credentials[0] === lastCredentials["nation"]) {
         reqHeaders = {
             "User-Agent": "Transfer-Cleanup userscript/tool, developed by SherpDaWerp, in use by "+useragent,
-            "X-Pin": lastCredentials["pin"]
+            "X-Pin": lastCredentials["pin"],
+          	"X-Autologin": lastCredentials["autologin"],
+          	"X-Password": lastCredentials["password"]
         }
         newLastCredentials = lastCredentials;
     } else {
@@ -168,17 +180,22 @@ async function transferCleanupDoGiftCard(cardInfo, credentials, toNation, lastCr
         method: "GET",
         headers: reqHeaders
     });
-    console.log(response);
 
     if (response.status != 200) {
         logMessageToRunPage("Error: Preparing gift of "+cardInfo[0]+":"+cardInfo[1]+" from "+credentials[0]+" to "+toNation+" failed.\n");
         logMessageToRunPage("       Terminating program...\n");
+      
+      	console.log(await response.text());
         return null;
     } else {
         if (newLastCredentials["nation"] === "") {
             newLastCredentials["nation"] = credentials[0];
             newLastCredentials["pin"] = response.headers.get("X-Pin");
+          	newLastCredentials["autologin"] = response.headers.get("X-Autologin");
+          	newLastCredentials["password"] = credentials[1];
+                               
             reqHeaders["X-Pin"] = response.headers.get("X-Pin");
+          	reqHeaders["X-Autologin"] = response.headers.get("X-Autologin");
         }
 
         let parsed = parser.parseFromString((await response.text()), "text/xml");
@@ -198,11 +215,12 @@ async function transferCleanupDoGiftCard(cardInfo, credentials, toNation, lastCr
         method: "GET",
         headers: reqHeaders
     });
-    console.log(response);
 
     if (response.status != 200) {
         logMessageToRunPage("Error: Preparing gift of "+cardInfo[0]+":"+cardInfo[1]+" from "+credentials[0]+" to "+toNation+" failed.\n");
         logMessageToRunPage("       Terminating program...\n");
+      
+     		console.log(await response.text());
         return null;
     } else {
         let parsed = parser.parseFromString((await response.text()), "text/xml");
@@ -263,6 +281,7 @@ async function transferCleanupButtonRunScript() {
 
         let timeDif = (Number(lastRequestTime) - Number(clock.getTime())) + x_rateLimit;
         if (timeDif > 0) {
+          	console.log("ratelimiting "+timeDif);
             await sleep(timeDif);
         }
 
@@ -279,7 +298,8 @@ async function transferCleanupButtonRunScript() {
                     logMessageToRunPage("       Terminating program...\n");
                     return;
                 }
-                if (credential[0].toLowerCase().replace(" ", "_") === owner) {
+              
+                if (credential[0].toLowerCase().split(' ').join('_') === owner) {
                     giftQueue.push({from: credential[0], pwd: credential[1], cardid: transferCard[0], season: transferCard[1]});
                 }
 
@@ -291,7 +311,8 @@ async function transferCleanupButtonRunScript() {
     }
 
     logMessageToRunPage("Info: Finished checking owners for all transfer cards...\n");
-    let lastCredentials = {nation: "", pin: ""};
+    let lastCredentials = {nation: "", pin: "", autologin: "", password: ""};
+  
     for (let gift of giftQueue) {
         if (transferCleanupStopped) {
             logMessageToRunPage("Stopped!\n");
@@ -303,6 +324,7 @@ async function transferCleanupButtonRunScript() {
 
         let timeDif = (Number(lastRequestTime) - Number(clock.getTime())) + x_rateLimit*2;
         if (timeDif > 0) {
+          	console.log("ratelimiting "+timeDif);
             await sleep(timeDif);
         }
 
