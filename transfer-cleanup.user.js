@@ -66,6 +66,10 @@ function readURLParameters(path) {
     return parameters;
 }
 
+function canonicalise(string) {
+  return string.toLowerCase().split(' ').join('_');
+}
+
 function transferCleanupPause() {
     if (transferCleanupPaused) {
         logMessageToRunPage("Resuming...\n");
@@ -242,7 +246,7 @@ async function transferCleanupDoGiftCard(cardInfo, credentials, toNation, lastCr
  */
 async function transferCleanupButtonRunScript() {
     let x_userAgent = document.getElementById("userAgent").value,
-        x_mainNation = document.getElementById("mainNation").value,
+        x_mainNation = canonicalise(document.getElementById("mainNation").value),
         x_rateLimit = document.getElementById("rateLimit").value,
         x_credentials = document.getElementById("credentials").value,
         x_transferCards = document.getElementById("transferCards").value;
@@ -265,6 +269,7 @@ async function transferCleanupButtonRunScript() {
 
     for (let transferCard of x_transferCards.split("\n")) {
         if (transferCleanupStopped) {
+          	logMessageToRunPage("Stopped!\n");
             return;
         }
         await waitUntilUnpaused();
@@ -299,8 +304,8 @@ async function transferCleanupButtonRunScript() {
                     return;
                 }
               
-                if (credential[0].toLowerCase().split(' ').join('_') === owner) {
-                    giftQueue.push({from: credential[0], pwd: credential[1], cardid: transferCard[0], season: transferCard[1]});
+                if (canonicalise(credential[0]) === owner) {
+                    giftQueue.push({from: canonicalise(credential[0]), pwd: credential[1], cardid: transferCard[0], season: transferCard[1]});
                 }
 
                 credLineNum++;
@@ -375,14 +380,19 @@ function createTransferCleanupAboutPage() {
 }
 
 function createTransferCleanupLink() {
-    let transferCleanupLink = document.createElement("div"),
-        x_NsPageBanner = document.getElementById("banner");
+  	if (document.getElementById("puppet-suite-link") == null) {
+        let transferCleanupLink = document.createElement("div"),
+            x_NsPageBanner = document.getElementById("banner");
 
-    transferCleanupLink.innerHTML = transferCleanupBannerLinkHTML;
-    transferCleanupLink.setAttribute("class", "bel");
+        transferCleanupLink.innerHTML = transferCleanupBannerLinkHTML;
+        transferCleanupLink.setAttribute("class", "bel");
+        transferCleanupLink.setAttribute("id", "puppet-suite-link");
 
-    // little bit dodgy ig
-    x_NsPageBanner.insertBefore(transferCleanupLink, x_NsPageBanner.lastChild.previousSibling);
+        // little bit dodgy ig
+        x_NsPageBanner.insertBefore(transferCleanupLink, x_NsPageBanner.lastChild.previousSibling);
+    } else {
+        // setup for dropdown menu?
+    }
 }
 
 (async function() {
