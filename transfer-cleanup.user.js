@@ -120,7 +120,7 @@ function logMessageToRunPage(message) {
 }
 
 async function transferCleanupCardOwnersRequest(cardInfo, useragent) {
-    let response = await fetch("https://www.nationstates.net/cgi-bin/api.cgi?q=card+owners&cardid="+cardInfo[0]+"&season="+cardInfo[1], {
+    let response = await fetch("https://www.nationstates.net/cgi-bin/api.cgi?q=card+owners&cardid="+cardInfo[0]+"&season="+cardInfo[1]+"&script=transfer-cleanup-sherpdawerp", {
         method: "GET",
         headers: {
             "User-Agent": "Transfer-Cleanup userscript/tool, developed by SherpDaWerp, in use by "+useragent,
@@ -180,7 +180,7 @@ async function transferCleanupDoGiftCard(cardInfo, credentials, toNation, lastCr
         }
     }
 
-    let response = await fetch("https://www.nationstates.net/cgi-bin/api.cgi?nation="+credentials[0]+"&c=giftcard&cardid="+cardInfo[0]+"&season="+cardInfo[1]+"&to="+toNation+"&mode=prepare", {
+    let response = await fetch("https://www.nationstates.net/cgi-bin/api.cgi?nation="+credentials[0]+"&c=giftcard&cardid="+cardInfo[0]+"&season="+cardInfo[1]+"&to="+toNation+"&mode=prepare&script=transfer-cleanup-sherpdawerp", {
         method: "GET",
         headers: reqHeaders
     });
@@ -215,7 +215,7 @@ async function transferCleanupDoGiftCard(cardInfo, credentials, toNation, lastCr
         }
     }
 
-    response = await fetch("https://www.nationstates.net/cgi-bin/api.cgi?nation="+credentials[0]+"&c=giftcard&cardid="+cardInfo[0]+"&season="+cardInfo[1]+"&to="+toNation+"&mode=execute&token="+giftToken, {
+    response = await fetch("https://www.nationstates.net/cgi-bin/api.cgi?nation="+credentials[0]+"&c=giftcard&cardid="+cardInfo[0]+"&season="+cardInfo[1]+"&to="+toNation+"&mode=execute&token="+giftToken+"&script=transfer-cleanup-sherpdawerp", {
         method: "GET",
         headers: reqHeaders
     });
