@@ -3,7 +3,7 @@
 // @author          SherpDaWerp
 // @description     ns-transfer-cleanup reloaded
 // @downloadURL     https://raw.githubusercontent.com/sherpdawerp/ns-transfer-cleanup/master/transfer-cleanup.user.js
-// @version         1.0.1
+// @version         1.1
 // @match           https://www.nationstates.net/*
 // @run-at          document-end
 // ==/UserScript==
@@ -29,6 +29,7 @@ mysecondpuppet,password2</pre>Inputting passwords is required for this tool to f
 
 const transferCleanupAboutPageHTML = `<div class="transfer-cleanup-content"> <p class="lead">transfer-cleanup is a free, open-source userscript tool that helps to automatically cleanup after mass-copy card transfers.</p><div class="transfer-cleanup-panel"> <div class="transfer-cleanup-panel-heading"> <h3 class="transfer-cleanup-panel-title"><a href="/page=blank/x-transfer-cleanup=main">Configuration</a> | <a href="/page=blank/x-transfer-cleanup=about">About</a </h3> </div><div class="transfer-cleanup-panel-body"> <div class="transfer-cleanup-about-panel"> <h5 class="transfer-cleanup-panel-title" id="about"> About This Program </h5> <div class="transfer-cleanup-about-content"><p><em>transfer-cleanup</em> Copyright © 2021 SherpDaWerp<br><br>With thanks to:<br><b>nslogin-web</b> Copyright © 2017 Auralia<br>for providing an excellent visual template for projects like this<br><br><em>Github Repository: </em><a href="https://github.com">Coming Soon</a><br><em>NationStates Forum Page: </em><a href="https://github.com">Coming Soon</a><br><br><em>NationStates Cards Discord Server: </em><a href="https://discord.com/invite/yn5a4p9">https://discord.com/invite/yn5a4p9</a></p></div></div><div class="transfer-cleanup-about-panel"> <h5 class="transfer-cleanup-panel-title" id="passwords"> How Transfer-Cleanup Handles Passwords </h5> <div class="transfer-cleanup-about-content">All code is run client-side and passwords are only transmitted to NationStates. Nothing is transferred to any contributor (me or any other) as third parties. You can verify this yourself by reading the source code of this program (available on <a href="">GitHub</a>, or alternatively, installed into your browser). Passwords cannot be saved to localstorage and are only kept while they are actively input into transfer-cleanup. If you choose to upload your credentials as a file, you are choosing the file that the browser accesses (so this tool cannot see anything you don't give it). Furthermore, this file is then only read in-browser and not transmitted anywhere. </div></div><div class="transfer-cleanup-about-panel"> <h5 class="transfer-cleanup-panel-title" id="license"> License </h5> <div class="transfer-cleanup-about-content"><p><em>transfer-cleanup</em> is licensed under the Apache License 2.0:</p><h2><a id="Apache_License_0"></a>Apache License</h2> <p><em>Version 2.0, January 2004</em><br><em>&lt;<a href="http://www.apache.org/licenses/">http://www.apache.org/licenses/</a>&gt; </em> </p><h3> <a id="Terms_and_Conditions_for_use_reproduction_and_distribution_6"></a>Terms and Conditions for use, reproduction, and distribution</h3> <h4><a id="1_Definitions_8"></a>1. Definitions</h4> <p>“License” shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document.</p><p>“Licensor” shall mean the copyright owner or entity authorized by the copyright owner that is granting the License.</p><p>“Legal Entity” shall mean the union of the acting entity and all other entities that control, are controlled by, or are under common control with that entity. For the purposes of this definition, “control” means <strong>(i)</strong> the power, direct or indirect, to cause the direction or management of such entity, whether by contract or otherwise, or <strong>(ii)</strong> ownership of fifty percent (50%) or more of the outstanding shares, or <strong>(iii)</strong> beneficial ownership of such entity.</p><p>“You” (or “Your”) shall mean an individual or Legal Entity exercising permissions granted by this License.</p><p>“Source” form shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files.</p><p>“Object” form shall mean any form resulting from mechanical transformation or translation of a Source form, including but not limited to compiled object code, generated documentation, and conversions to other media types.</p><p>“Work” shall mean the work of authorship, whether in Source or Object form, made available under the License, as indicated by a copyright notice that is included in or attached to the work (an example is provided in the Appendix below).</p><p>“Derivative Works” shall mean any work, whether in Source or Object form, that is based on (or derived from) the Work and for which the editorial revisions, annotations, elaborations, or other modifications represent, as a whole, an original work of authorship. For the purposes of this License, Derivative Works shall not include works that remain separable from, or merely link (or bind by name) to the interfaces of, the Work and Derivative Works thereof.</p><p>“Contribution” shall mean any work of authorship, including the original version of the Work and any modifications or additions to that Work or Derivative Works thereof, that is intentionally submitted to Licensor for inclusion in the Work by the copyright owner or by an individual or Legal Entity authorized to submit on behalf of the copyright owner. For the purposes of this definition, “submitted” means any form of electronic, verbal, or written communication sent to the Licensor or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, the Licensor for the purpose of discussing and improving the Work, but excluding communication that is conspicuously marked or otherwise designated in writing by the copyright owner as “Not a Contribution.”</p><p>“Contributor” shall mean Licensor and any individual or Legal Entity on behalf of whom a Contribution has been received by Licensor and subsequently incorporated within the Work.</p><h4><a id="2_Grant_of_Copyright_License_62"></a>2. Grant of Copyright License</h4> <p>Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare Derivative Works of, publicly display, publicly perform, sublicense, and distribute the Work and such Derivative Works in Source or Object form.</p><h4><a id="3_Grant_of_Patent_License_70"></a>3. Grant of Patent License</h4> <p>Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Work, where such license applies only to those patent claims licensable by such Contributor that are necessarily infringed by their Contribution(s) alone or by combination of their Contribution(s) with the Work to which such Contribution(s) was submitted. If You institute patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Work or a Contribution incorporated within the Work constitutes direct or contributory patent infringement, then any patent licenses granted to You under this License for that Work shall terminate as of the date such litigation is filed.</p><h4><a id="4_Redistribution_85"></a>4. Redistribution</h4> <p>You may reproduce and distribute copies of the Work or Derivative Works thereof in any medium, with or without modifications, and in Source or Object form, provided that You meet the following conditions:</p><ul> <li><strong>(a)</strong> You must give any other recipients of the Work or Derivative Works a copy of this License; and </li><li><strong>(b)</strong> You must cause any modified files to carry prominent notices stating that You changed the files; and </li><li><strong>(c)</strong> You must retain, in the Source form of any Derivative Works that You distribute, all copyright, patent, trademark, and attribution notices from the Source form of the Work, excluding those notices that do not pertain to any part of the Derivative Works; and </li><li><strong>(d)</strong> If the Work includes a “NOTICE” text file as part of its distribution, then any Derivative Works that You distribute must include a readable copy of the attribution notices contained within such NOTICE file, excluding those notices that do not pertain to any part of the Derivative Works, in at least one of the following places: within a NOTICE text file distributed as part of the Derivative Works; within the Source form or documentation, if provided along with the Derivative Works; or, within a display generated by the Derivative Works, if and wherever such third-party notices normally appear. The contents of the NOTICE file are for informational purposes only and do not modify the License. You may add Your own attribution notices within Derivative Works that You distribute, alongside or as an addendum to the NOTICE text from the Work, provided that such additional attribution notices cannot be construed as modifying the License. </li></ul> <p>You may add Your own copyright statement to Your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of Your modifications, or for any such Derivative Works as a whole, provided Your use, reproduction, and distribution of the Work otherwise complies with the conditions stated in this License.</p><h4><a id="5_Submission_of_Contributions_119"></a>5. Submission of Contributions</h4> <p>Unless You explicitly state otherwise, any Contribution intentionally submitted for inclusion in the Work by You to the Licensor shall be under the terms and conditions of this License, without any additional terms or conditions. Notwithstanding the above, nothing herein shall supersede or modify the terms of any separate license agreement you may have executed with Licensor regarding such Contributions.</p><h4><a id="6_Trademarks_128"></a>6. Trademarks</h4> <p>This License does not grant permission to use the trade names, trademarks, service marks, or product names of the Licensor, except as required for reasonable and customary use in describing the origin of the Work and reproducing the content of the NOTICE file.</p><h4><a id="7_Disclaimer_of_Warranty_135"></a>7. Disclaimer of Warranty</h4> <p>Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License.</p><h4><a id="8_Limitation_of_Liability_146"></a>8. Limitation of Liability</h4> <p>In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall any Contributor be liable to You for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Work (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if such Contributor has been advised of the possibility of such damages.</p><h4> <a id="9_Accepting_Warranty_or_Additional_Liability_158"></a>9. Accepting Warranty or Additional Liability</h4> <p>While redistributing the Work or Derivative Works thereof, You may choose to offer, and charge a fee for, acceptance of support, warranty, indemnity, or other liability obligations and/or rights consistent with this License. However, in accepting such obligations, You may act only on Your own behalf and on Your sole responsibility, not on behalf of any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against, such Contributor by reason of your accepting any such warranty or additional liability.</p><p><em>END OF TERMS AND CONDITIONS</em></p></div></div></div></div></div>`;
 
+// short function to read files into the text boxes; gets injected into the page rather than run through the userscript
 const transferCleanupShowFileScript = `
     function showFileUpload(input) {
         let reader = new FileReader(),
@@ -51,9 +52,15 @@ const transferCleanupShowFileScript = `
     }
 `;
 
+// global variables
 var transferCleanupPaused = false,
-    transferCleanupStopped = false;
+    transferCleanupStopped = false,
+		lastRequestSentTime = 0,
+    transferCleanupRateLimit = 600;
 
+/**
+ * URL parameter reader-and-splitter into a dictionary
+ */ 
 function readURLParameters(path) {
     let splitPath = path.split("/"),
         parameters = {};
@@ -65,10 +72,16 @@ function readURLParameters(path) {
     return parameters;
 }
 
+/**
+ * string "canonicalise"-er for api requests & string matching
+ */
 function canonicalise(string) {
   return string.toLowerCase().split(' ').join('_');
 }
 
+/**
+ * Switches the program from paused to running or vice versa.
+ */
 function transferCleanupPause() {
     if (transferCleanupPaused) {
         logMessageToRunPage("Resuming...\n");
@@ -90,17 +103,6 @@ function transferCleanupStop() {
 }
 
 /**
- * Horrific JS-async version of a sleep function.
- */
-function sleep(time) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve("");
-        }, time);
-    });
-}
-
-/**
  * Polls transferCleanupPaused to determine whether the program can restart running.
  */
 async function waitUntilUnpaused() {
@@ -113,18 +115,46 @@ async function waitUntilUnpaused() {
     }
 }
 
+/**
+ * Logs a message to the output box and scrolls down to it.
+ */ 
 function logMessageToRunPage(message) {
     document.getElementById("transfer-cleanup-run-output").value = document.getElementById("transfer-cleanup-run-output").value + message;
   	document.getElementById("transfer-cleanup-run-output").scrollTop = document.getElementById("transfer-cleanup-run-output").scrollHeight;
 }
 
+/**
+ * "wrapper" function that ratelimits NS API calls
+ */
+async function transferCleanupAPIWrapper(url, args) {
+  let timeDif = (Number(lastRequestSentTime) - Number(performance.now())) + transferCleanupRateLimit;
+  
+  if (timeDif > 0) {
+    	console.log("ratelimiting "+timeDif);
+    	
+    	await new Promise(resolve => {
+					setTimeout(() => {
+							resolve("");
+          }, timeDif);
+      });
+  }
+
+  let response = await fetch(url + "&script=sherpdawerp-transfer-cleanup", args);
+  lastRequestSentTime = Number(performance.now());
+  
+ 	return response;
+}
+
 async function transferCleanupCardOwnersRequest(cardInfo, useragent) {
-    let response = await fetch("https://www.nationstates.net/cgi-bin/api.cgi?q=card+owners&cardid="+cardInfo[0]+"&season="+cardInfo[1]+"&script=transfer-cleanup-sherpdawerp", {
-        method: "GET",
-        headers: {
-            "User-Agent": "Transfer-Cleanup userscript/tool, developed by SherpDaWerp, in use by "+useragent,
-        }
-    });
+    let response = await transferCleanupAPIWrapper(
+      	"https://www.nationstates.net/cgi-bin/api.cgi?q=card+owners&cardid="+cardInfo[0]+"&season="+cardInfo[1],
+      	{
+        		method: "GET",
+        		headers: {
+            		"User-Agent": "Transfer-Cleanup userscript/tool, developed by SherpDaWerp, in use by "+useragent,
+        		}
+    		}
+   	);
 
     if (response.status != 200) {
         logMessageToRunPage("Error: Requesting owners of "+cardInfo[0]+":"+cardInfo[1]+" failed.\n");
@@ -179,10 +209,13 @@ async function transferCleanupDoGiftCard(cardInfo, credentials, toNation, lastCr
         }
     }
 
-    let response = await fetch("https://www.nationstates.net/cgi-bin/api.cgi?nation="+credentials[0]+"&c=giftcard&cardid="+cardInfo[0]+"&season="+cardInfo[1]+"&to="+toNation+"&mode=prepare&script=transfer-cleanup-sherpdawerp", {
-        method: "GET",
-        headers: reqHeaders
-    });
+    let response = await transferCleanupAPIWrapper(
+      	"https://www.nationstates.net/cgi-bin/api.cgi?nation="+credentials[0]+"&c=giftcard&cardid="+cardInfo[0]+"&season="+cardInfo[1]+"&to="+toNation+"&mode=prepare",
+      	{
+        		method: "GET",
+        		headers: reqHeaders
+    		}
+    );
 
     if (response.status != 200) {
         logMessageToRunPage("Error: Preparing gift of "+cardInfo[0]+":"+cardInfo[1]+" from "+credentials[0]+" to "+toNation+" failed.\n");
@@ -214,10 +247,13 @@ async function transferCleanupDoGiftCard(cardInfo, credentials, toNation, lastCr
         }
     }
 
-    response = await fetch("https://www.nationstates.net/cgi-bin/api.cgi?nation="+credentials[0]+"&c=giftcard&cardid="+cardInfo[0]+"&season="+cardInfo[1]+"&to="+toNation+"&mode=execute&token="+giftToken+"&script=transfer-cleanup-sherpdawerp", {
-        method: "GET",
-        headers: reqHeaders
-    });
+    response = await transferCleanupAPIWrapper(
+      	"https://www.nationstates.net/cgi-bin/api.cgi?nation="+credentials[0]+"&c=giftcard&cardid="+cardInfo[0]+"&season="+cardInfo[1]+"&to="+toNation+"&mode=execute&token="+giftToken,
+      	{
+        		method: "GET",
+        		headers: reqHeaders
+    		}
+    );
 
     if (response.status != 200) {
         logMessageToRunPage("Error: Preparing gift of "+cardInfo[0]+":"+cardInfo[1]+" from "+credentials[0]+" to "+toNation+" failed.\n");
@@ -246,11 +282,11 @@ async function transferCleanupDoGiftCard(cardInfo, credentials, toNation, lastCr
 async function transferCleanupButtonRunScript() {
     let x_userAgent = document.getElementById("userAgent").value,
         x_mainNation = canonicalise(document.getElementById("mainNation").value),
-        x_rateLimit = document.getElementById("rateLimit").value,
         x_credentials = document.getElementById("credentials").value,
         x_transferCards = document.getElementById("transferCards").value;
+  	transferCleanupRateLimit = document.getElementById("rateLimit").value;
     
-    if (x_rateLimit < 600) {
+    if (transferCleanupRateLimit < 600) {
         document.getElementById("transfer-cleanup-start-info").innerHTML = "You cannot have a ratelimit less than 600ms!";
         return;
     }
@@ -262,9 +298,7 @@ async function transferCleanupButtonRunScript() {
 
     let giftQueue = [],
         cardLineNum = 1,
-        credLineNum = 1,
-        clock = new Date(),
-        lastRequestTime = Number(clock.getTime());
+        credLineNum = 1;
 
     for (let transferCard of x_transferCards.split("\n")) {
         if (transferCleanupStopped) {
@@ -283,14 +317,7 @@ async function transferCleanupButtonRunScript() {
 
         logMessageToRunPage("Info: Checking owners for cardid "+transferCard[0]+" / season "+transferCard[1]+"\n");
 
-        let timeDif = (Number(lastRequestTime) - Number(clock.getTime())) + x_rateLimit;
-        if (timeDif > 0) {
-          	console.log("ratelimiting "+timeDif);
-            await sleep(timeDif);
-        }
-
         let owners = await transferCleanupCardOwnersRequest(transferCard, x_userAgent);
-        lastRequestTime = Number(clock.getTime());
 
         for (let owner of owners) {
             credLineNum = 1;
@@ -326,17 +353,10 @@ async function transferCleanupButtonRunScript() {
 
         logMessageToRunPage("Info: Gifting "+gift["cardid"]+":"+gift["season"]+" from "+gift["from"]+" to "+x_mainNation+"...\n");
 
-        let timeDif = (Number(lastRequestTime) - Number(clock.getTime())) + x_rateLimit*2;
-        if (timeDif > 0) {
-          	console.log("ratelimiting "+timeDif);
-            await sleep(timeDif);
-        }
-
         lastCredentials = await transferCleanupDoGiftCard([gift["cardid"], gift["season"]], [gift["from"], gift["pwd"]], x_mainNation, lastCredentials, x_userAgent);
         if (lastCredentials == null) {
             return;
         }
-        lastRequestTime = Number(clock.getTime());
     }
 
     logMessageToRunPage("Finished!\n");
@@ -367,7 +387,7 @@ function createTransferCleanupCSS() {
         transferCleanupStyle = document.createElement('style');
 
     x_NsPageHeader.appendChild(transferCleanupStyle);
-    transferCleanupStyle.type = "text/css"; // NB: "type" is only a deprecated property for <li> elements
+    transferCleanupStyle.type = "text/css"; // NB: "type" is only a deprecated property for <li> elements, if your IDE is yelling at you
 
     transferCleanupStyle.appendChild(document.createTextNode(transferCleanupCSS));
 }
@@ -394,6 +414,10 @@ function createTransferCleanupLink() {
     }
 }
 
+function transferCleanupChangePageTitle() {
+  	document.getElementsByTagName("title")[0].innerHTML = "NationStates | TransferCleanup Userscript";
+}
+
 (async function() {
     "use strict";
     createTransferCleanupLink();
@@ -401,12 +425,16 @@ function createTransferCleanupLink() {
     let x_NsURLParams = readURLParameters(window.location.pathname);
     if (Object.keys(x_NsURLParams).includes("x-transfer-cleanup")) {
         if (x_NsURLParams["x-transfer-cleanup"] == "main") {
+          	lastRequestSentTime = Number(performance.now());
+          	
             createFileUploadJS();
             createTransferCleanupCSS();
             createTransferCleanupMainPage();
+          	transferCleanupChangePageTitle()
         } else if (x_NsURLParams["x-transfer-cleanup"] == "about") {
             createTransferCleanupCSS();
             createTransferCleanupAboutPage();
+          	transferCleanupChangePageTitle();
         }
     }
 })();
