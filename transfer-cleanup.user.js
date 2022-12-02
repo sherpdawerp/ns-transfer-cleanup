@@ -2,7 +2,7 @@
 // @name            transfer-cleanup
 // @author          SherpDaWerp
 // @description     ns-transfer-cleanup reloaded
-// @downloadURL     https://github.com/sherpdawerp/ns-transfer-cleanup/raw/master/transfer-cleanup.user.js
+// @downloadURL     https://raw.githubusercontent.com/sherpdawerp/ns-transfer-cleanup/master/transfer-cleanup.user.js
 // @version         1.0.1
 // @match           https://www.nationstates.net/*
 // @run-at          document-end
