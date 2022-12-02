@@ -5,7 +5,6 @@
 // @downloadURL     https://github.com/sherpdawerp/ns-transfer-cleanup/raw/master/transfer-cleanup.user.js
 // @version         1.0.1
 // @match           https://www.nationstates.net/*
-// @grant           console.log
 // @run-at          document-end
 // ==/UserScript==
 
