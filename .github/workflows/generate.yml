@@ -1,0 +1,25 @@
+name: "Generate userscript"
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Glue files together
+        run: .github/scripts/glue.sh
+
+      - name: Upload userscript as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: "transfer-cleanup.user.js"
+
